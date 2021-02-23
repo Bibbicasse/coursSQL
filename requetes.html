@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+   <link rel="stylesheet" href="css/bootstrap.css">
+
+    <title>SQL COURS</title>
+  </head>
+
+  <body>
+<div class="container-fluid">
+    <!-- ========================================= -->
+    <!--                navigation                 -->
+    <!-- ========================================= -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">cours SQL</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link active" aria-current="page" href="index.html">Accueil</a>
+                    <a class="nav-link" href="requetes.html">Les requetes MySQL</a>
+                    <a class="nav-link" href="#">Menu 2</a>
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Menu 3 - Disabled</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="container">
+
+
+         <!-- **********************************************-->
+         <!--               Contenu principal               -->
+         <!-- **********************************************-->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1 class="text-center">Les requêtes MySQL</h1>
+            </div> <!-- fin col -->
+        </div><!-- fin row -->
+        <div class="row">
+            <h2>Créer une base de donnée - <code>CREATE DATABASE basetest CHARACTER SET 'utf8';</code></h2>
+            
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <ul>
+                    <li>Créer une BDD
+                        <code> CREATE DATABASE basetest CHARACTER SET 'utf';</code>
+                    </li>
+                    <li>Voir les BDD dans le serveur
+                        <code>SHOW DATABASES;</code
+                            ></li>
+                    <li>Utiliser une base de donnée
+                        <code>USE basetest;</code>
+                    </li>
+                    <li>Supprimer une BDD
+                        <code>DROP DATABASE IF EXISTS basetest;</code>
+                    </li>
+                    <li>Créer une table dans la base 'entreprise' :
+                        <code>CREATE TABLE IF NOT EXISTS employes (id_employes int(3) NOT NULL AUTO_INCREMENT, 
+                        prenom varchar(20) DEFAULT NULL, 
+                        nom varchar(20) DEFAULT NULL, 
+                        sexe enum('m', 'f') NOT NULL, 
+                        service varchar(30) DEFAULT NULL, 
+                        date_embauche date DEFAULT NULL, 
+                        salaire float DEFAULT NULL, 
+                        PRIMARY KEY (id_employes) 
+                        ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+                        </code>
+                    </li>
+                    <li>Inserer des données dans la table employés
+                        <code>INSERT INTO employes (id_employes, prenom, nom, sexe, service, date_embauche, salaire) VALUES
+                            (350, 'Jean-pierre', 'Laborde', 'm', 'direction', '1999-12-09', 5000),
+                            (388, 'Clement', 'Gallet', 'm', 'commercial', '2000-01-15', 2300),
+                            (415, 'Thomas', 'Winter', 'm', 'commercial', '2000-05-03', 3550),
+                            (417, 'Chloe', 'Dubar', 'f', 'production', '2001-09-05', 1900),
+                            (491, 'Elodie', 'Fellier', 'f', 'secretariat', '2002-02-22', 1600),
+                            (509, 'Fabrice', 'Grand', 'm', 'comptabilite', '2003-02-20', 1900),
+                            (547, 'Melanie', 'Collier', 'f', 'commercial', '2004-09-08', 3100),
+                            (592, 'Laura', 'Blanchet', 'f', 'direction', '2005-06-09', 4500),
+                            (627, 'Guillaume', 'Miller', 'm', 'commercial', '2006-07-02', 1900),
+                            (655, 'Celine', 'Perrin', 'f', 'commercial', '2006-09-10', 2700),
+                            (699, 'Julien', 'Cottet', 'm', 'secretariat', '2007-01-18', 1390),
+                            (701, 'Mathieu', 'Vignal', 'm', 'informatique', '2008-12-03', 2000),
+                            (739, 'Thierry', 'Desprez', 'm', 'secretariat', '2009-11-17', 1500),
+                            (780, 'Amandine', 'Thoyer', 'f', 'communication', '2010-01-23', 1500),
+                            (802, 'Damien', 'Durand', 'm', 'informatique', '2010-07-05', 2250),
+                            (854, 'Daniel', 'Chevel', 'm', 'informatique', '2011-09-28', 1700),
+                            (876, 'Nathalie', 'Martin', 'f', 'juridique', '2012-01-12', 3200),
+                            (900, 'Benoit', 'Lagarde', 'm', 'production', '2013-01-03', 2550),
+                            (933, 'Emilie', 'Sennard', 'f', 'commercial', '2014-09-11', 1800),
+                            (990, 'Stephanie', 'Lafaye', 'f', 'assistant', '2015-06-02', 1775);</code>
+                    </li>
+                    <li>Afficher des données : SELECT</li>
+                    <li>Afficher les donné nom et prénom d'employés :
+                        <code>SELECT nom, prenom FROM employes;</code>
+                    </li>
+                </ul>
+                <h3>Le mot clef DINSTINCT</h3>
+                <ul>
+                    <li>Afficher les services occupés dans l'entreprise : <code></code></li>
+                    <li>Eviter les doublon grâce à DINSTINCT :  <code>SELECT DINSTINCT (service) FROM employes;</code></li>
+                </ul>
+                <h3>Les requêtes ne sont pas sensible à la casse, mais !!!</h3>
+                <p>Une convention indique qu'il faut mettre les mots-cléfs des requêtes en majuscule</p>
+                <ul>
+                    <li>Ces deux requêtes sont identiques : * = all, tout</li>
+                    <li><code>SELECT id_employes, prenom, nom, sexe, service, date_embauche, salaire FROM employes;</code></li>
+                    <li><code>SELECT * FROM employes;</code></li>
+                </ul>
+                <h3>Les conditions : le mot-clef WHERE</h3>
+                <p>Nous cherchons avec une condition une partie des données</p>
+                <ul>
+                    <li><code>SELECT nom, prenom FROM employes WHERE service='informatique";</code></li>
+                    <li>ou l'employé dont le prénom est Thomas : <code>SELECT nom, prenom FROM employes WHERE prenom='Thomas';</code></li>
+                </ul>
+                <h3>Le mot-clef BETWEEN</h3>
+                <p>Afficher les employés ayant été recrutés entre 2006 et 2010</p>
+                <ul>
+                    <li><code>SELECT * FROM employes WHERE date_embauche BETWEEN '2006-01-01' AND '2010-12-31';</code></li>
+                    <li><code>SELECT nom, prenom, date_embauche FROM employes WHERE date_embache BETWEEN 'aaaa-mm-jj' AND 'aaaa-mm-jj';</code></li>
+                    <li>Une requête quidonne la date du serveur <code>SELECT curdate();</code></li>
+                </ul>
+                <h3>Le mot-clef LIKE</h3>
+                <p>Afficher les employes dont le prénom commance par S</p>
+                <p>Avec la présence du caractère % avant et/ou après la lettre ou le mot recherché, nous demandons au système de trouver des enregistrements contenant l'expression recherchée.</p>
+                <ul>
+                    <li><code>SELECT * FROM employes WHERE prenom LIKE 's%';</code> Commancent par</li>
+                    <li><code>SELECT * FROM employes WHERE prenom LIKE 's%';</code> Finissant par</li>
+                    <li><code>SELECT * FROM employes WHERE prenom LIKE '%s%';</code> Comportant la lettre</li>
+                    <li><code>SELECT * FROM employes WHERE prenom LIKE '%-%';</code> Comportant les noms composés</li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h2>Les opérateurs de comparaison</h2>
+            </div>
+            <div class="col-12">
+                <h2>Les opérateurs de comparaison</h2>
+                <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">Opérateur</th>
+                        <th scope="col">Symbole</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">=</th>
+                        <td>est égal</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">&gt;</th>
+                        <td>strictement supérieur</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">&lt;</th>
+                        <td>strictement inférieur</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">&gt;=</th>
+                        <td>supérieur ou égal</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">&lt;=</th>
+                        <td>inférieur ou égal</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">&lt; &gt; ou !=</th>
+                        <td>est différent</td>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
+            <h2>L'opérateur !=</h2>
+            <ul>
+                <li>Tous les employés qui ne sont pas au service informatique <code> SELECT * FROM employes WHERE service !="informatique";</code></li>
+            </ul>
+            <h3>L'opérateur &gt;</h3>
+            <ul>
+                <li>Tous les employés gagnant plus de 3000 Euros <code></code></li>
+            </ul>
+        </div> <!-- fin row -->
+        <div class="row">
+            <div class="col-12">
+                <h2>Le classement avec ORDER BY</h2>
+            </div>
+            <div>
+                <ul>
+                    <li>Les employés triés par nom de famille et par odre alphabétique <code>SELECT prenom, nom FROM employes ORDER BY nom;</code></li>
+                    <li>Par odre (ASC) ascendent <code>SELECT prenom, nom FROM employes ORDER BY nom ASC;</code></li>
+                    <li>Par odre (DESC) déscendent<code>SELECT prenom, nom FROM employes ORDER BY nom DESC;</code></li>
+                    <li>----</li>
+                    <li>Trier sur plusieurs colonnes <code>SELECT prenom, nom, service, salaire FROM employes ORDER BY service ASC, salaire ASC; </code></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h2>Le classement avec ORDER BY</h2>
+            </div>
+            <div>
+                <ul>
+                    <li>Les employés triés par nom de famille et par odre alphabétique <code>SELECT prenom, nom FROM employes ORDER BY nom;</code></li>
+                    <li>Par odre (ASC) ascendent <code>SELECT prenom, nom FROM employes ORDER BY nom ASC;</code></li>
+                    <li>Par odre (DESC) déscendent<code>SELECT prenom, nom FROM employes ORDER BY nom DESC;</code></li>
+                    <li>----</li>
+                    <li>Trier sur plusieurs colonnes <code>SELECT prenom, nom, service, salaire FROM employes ORDER BY service ASC, salaire ASC; </code></li>
+                </ul>
+            </div>
+        </div>
+
+       
+    </div> <!-- fin container secondaire -->
+    
+</div> <!-- fin container principal -->
+
+
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<!--***********************************************-->
+<!--              jQuery en local                  -->
+<!-- **********************************************-->   
+<script src="jquery/jquery-3.5.1.js"></script>
+
+<!--***********************************************-->
+<!--                Popper en local                -->
+<!-- **********************************************-->
+<script src="js/popper.min.js"></script>
+
+<!-- **********************************************-->
+<!--             Boostrap JS en local              -->
+<!-- **********************************************--> 
+  <script src="js/bootstrap.js"></script>
+
+<!-- **********************************************-->
+<!--             JavaScript LOCAL                  -->
+<!-- **********************************************--> 
+
+
+  </body>
+</html>
