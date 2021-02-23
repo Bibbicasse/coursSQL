@@ -207,15 +207,23 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <h2>Le classement avec ORDER BY</h2>
+                <h2>Limiter les résultats avec le mot-clef LIMIT</h2>
             </div>
             <div>
                 <ul>
-                    <li>Les employés triés par nom de famille et par odre alphabétique <code>SELECT prenom, nom FROM employes ORDER BY nom;</code></li>
-                    <li>Par odre (ASC) ascendent <code>SELECT prenom, nom FROM employes ORDER BY nom ASC;</code></li>
-                    <li>Par odre (DESC) déscendent<code>SELECT prenom, nom FROM employes ORDER BY nom DESC;</code></li>
-                    <li>----</li>
-                    <li>Trier sur plusieurs colonnes <code>SELECT prenom, nom, service, salaire FROM employes ORDER BY service ASC, salaire ASC; </code></li>
+                    <li>Afficher les employés en les classant par salaire (du + grand au plus petit) et en les affichants par 3 <code>SELECT nom, prenom, service, salaire FROM employes ORDER BY salaire DESC LIMIT 3;</code></li>
+                    <li>Afficher les employés en les classant par salaire <code>SELECT nom, prenom, service, salaire FROM employes ORDER BY salaire DESC LIMIT 5,3;</code> Le premier chiffre nous indique à partir de quel numéro partira le comptage et le second affiche le nombre de resultats que l'on souhaite obtenir.</li>
+                    <li>Le mot-clef LIMIT est utile pour faire une pagination web</li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h2>Réaliser des calculs dans nos requêtes</h2>
+            </div>
+            <div>
+                <ul>
+                    <li>Afficher la liste des employés avec leur salaire annuel</li>
                 </ul>
             </div>
         </div>
