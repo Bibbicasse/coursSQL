@@ -54,7 +54,7 @@
             <div class="col-sm-12">
                 <ul>
                     <li>Créer une BDD
-                        <code> CREATE DATABASE basetest CHARACTER SET 'utf';</code>
+                        <code> CREATE DATABASE basetest CHARACTER SET 'utf8';</code>
                     </li>
                     <li>Voir les BDD dans le serveur
                         <code>SHOW DATABASES;</code
@@ -225,6 +225,169 @@
                 <ul>
                     <li>Afficher la liste des employés avec leur salaire annuel</li>
                 </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h2>Utiliser un alias avec AS</h2>
+            </div>
+            <div class="col-12">
+                <ul>
+                    <li>SELECT nom, prenom, salaire, salaire*12 AS salaire_annuel FROM employes ORDER BY salaire_annuel DESC;</li>
+                    <li>Le mot-cléf As permet de définir un alias</li>
+                </ul>
+            </div>
+            <div class="col-12">
+                <h3>Calculer une somme avec SUM et une moyenne avec AVG</h3>
+            </div>
+            <div class="col-12">
+                <li><code>SELECT SUM(salaire*12) FROM employes;</code></li>
+                <li><code>SELECT AVG(salaire*12) FROM employes;</code></li>
+            </div>
+            <div class="col-12">
+                <h3>Arrondir avec ROUND</h3>
+            </div>
+            <div class="col-12">
+                <li>Arrondir un calcul <code>SELECT ROUND(AVG(salaire)) FROM employes;</code></li>
+                <li><code>SELECT AVG(salaire*12) FROM employes;</code></li>
+                <li>Faire un alias <code>SELECT ROUND (AVG(salaire)) AS moyen_mensuelle FROM employes;</code></li>
+            </div>
+            <div class="col-12">
+                <h3>Compter avec COUNT</h3>
+            </div>
+            <div class="col-12">
+                <ul>
+                    <li>Compter le nombre d'employées : <code>SELECT COUNT(*) FROM employes WHERE sexe='f';</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h2>Isoler une valeur minimum ou maximum avec MIN ou MAX</h2>
+            </div>
+            <div class="col-12">
+                <ul>
+                    <li>Trouver le salaire minimum :<code> SELECT MIN(salaire) FROM employes;</code></li>
+                    <li>Trouver le salaire maximum :<code> SELECT MAX(salaire) FROM employes;</code></li>
+                    <li>Trouver le salaire maximum :<code> SELECT prenom, nom MIN(salaire) FROM employes;</code> <br> Cette requête ne fonctionne pas, pour le trouver le salaire et la personne qui gagne il faut écrire <code>SELECT prenom, salaire FROM employes WHERE salaire = (SELECT MIN(salaire) FROM employes);</code> : Le ststeme va d'abord exécuter la requête entre pareenthèse pour connaitre le résultat et l'utiliser  comme source pour l'autre requête</li>
+                    <li>Trouver le salaire maximum : <code>SELECT prenom, salaire FROM employes WHERE salaire = (SELECT MAX(salaire) FROM employes);</code> Cela s'appelle une requête imbriquée.</li>
+                    <li>Trouver qui gagne 1390€ <code>SELECT prenom, nom, salaire FROM employes WHERE salaire = 1390;
+                    </code></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h2>Condition In avec plusieurs valeurs</h2>
+            </div>
+            <div class="col-12">
+                <ul>
+                    <li>Trouver les employés à la compatibilité et au service informatique <code>SELECT prenom, nom, service FROM employes WHERE service IN('comptabilite','informatique');</code> </li>
+                    <li>= permet d'annoncer 1 seul valeur</li>
+                    <li>IN permet d'annoncer plusieurs valeurs</li>
+                    <li>Trouver les employés qui ne sont pas au service informatique et à la comptabilité avec NOT IN<code>SELECT nom, prenom, service FROM employes WHERE service NOT IN ('comptabilité', 'informatique') ORDER BY service;</code></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h2>Condition Multiple, différents champs et valeurs</h2>
+            </div>
+            <div class="col-12">
+                <ul>
+                    <li>SELECT nom, prenom, salaire, service FROM employes WHERE service = 'commercial' AND salaire <= 2000;</li>
+                </ul>
+            </div>
+            <div class="col-12">
+                <h3>Ordre de priorité sur les conditions AND et OR</h3>
+            </div>
+            <div class="col-12">
+                <ul>
+                    <li><code>SELECT nom, prenom, service, salaire FROM employes WHERE service ='production' AND salaire= 1900 OR salaire = 2300;</code></li>
+                    <li>Lorsqu'il y a AND et OR au sein de la même requête, le système lit la condition de la droite vers la gauche et il verra d'abord <code>salaire = 1900 OR salaire = 2300</code> et ensuite le service <code>service='production'</code></li>
+                    <li>Pour garentir l'ordre naturel de lecture (de la gauche vers la droite) on utilisera les pareenthèse : <code>SELECT nom, prenom, service, salaire FROM employes WHERE service ='production' AND salaire= 1900 OR salaire = 2300;</code></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h2>Les regroupement avec GROUP BY</h2>
+            </div>
+            <div class="col-12">
+                <ul>
+                    <li>Si l'on veut connaître le nombre d'employés par service : <code>SELECT service, COUNT(*) AS nombre_employes FROM employes GROUP BY service;</code></li>
+                </ul>
+            </div>
+            <div class="col-12">
+                <ul>
+                    <li><code>SELECT service, COUNT(*) AS nombre_employes FROM employes GROUP BY service HAVING COUNT(*) > 2;</code></li>
+                    <li></li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <div class="row bg-info">
+            <div class="col-12 ">
+                <h2>Les requêtes d'insertion avec INSERT</h2>
+            </div>
+            <div class="col-12">
+                <ul>
+                    <li>Insérer un enregistrement : <code>INSERT INTO employes(prenom, nom, sexe, service, date_embauche, salaire) VALUES ('Alexis', 'Richy', 'm', 'informatique', '2011-12-28', 1800);</code> </li>
+                    <li>Insérer un enregistrement : 2nde méthode <code>INSERT INTO employes VALUES (NULL, 'Patrick', 'Isola', 'm','Professeur', '2020-06-01', 2000); </code>NULL nous permet de laisser le champs id_employes se remplir seul car il est auto-incrémenté</li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h2>Les requetes de modification avec UPDATE</h2>
+            </div>
+            <div class="col-12">
+                <ul>
+                    <li>Augmenter le salaire d'un employé: <code>UPDATE employes SET salaire = 1871 WHERE id_employes = 990;</code></li>
+                    <li>Il est recommandé de modifier un enregistrement en ciblant son ID, l'ID étant unique</li>
+                    <li>Mettre a jour plusieurs information <code>UPDATE employes SET service = 'informatique', salaire = 2500 WHERE id_employes = 990;</code></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h2>Supprimer un enregistrement avec DELETE</h2>
+            </div>
+            <div class="col-12">
+                <ul>
+                    <li> Supprimer un enregistrement; <code>DELETE FROM employes WHERE id_employes = 388;</code></li>
+                    <li> Supprimer plusieurs Enregistrements; <code>DELETE FROM employes WHERE service = 'informatique';</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h2>EXERCICE</h2>
+            </div>
+            <div class="col-12">
+                <ol>
+                    <li>Afficher la profession de l'employé  : <code>SELECT service FROM employes WHERE id_employes = 547;</code></li>
+
+                    <li>Afficher la date d'embauche d'amandine: <code>SELECT date_embauche FROM employes WHERE prenom = 'amandine';</code></li>
+
+                    <li>Afficher le nombre de commerciaux : <code>SELECT * FROM employes WHERE service = 'commercial';</code></li>
+
+                    <li>Afficher le coût des commerciaux sur 1 année : <code>SELECT (SUM(salaire*12)) AS moyen_annuel FROM employes WHERE service = 'commercial';</code></li>
+
+                    <li>Afficher le salaire moyen par service : <code>SELECT service, ROUND (AVG(salaire)) AS 'cout_moyen' FROM employes GROUP BY service;</code></li>
+
+                    <li>Afficher le nombre de recrutements sur l'année 2010 : <code>SELECT COUNT(*) AS 'nbr de recrutement 2010' FROM employes WHERE date_embauche BETWEEN '2010-01-01' AND '2010-12-31';</code> ou <code>SELECT COUNT(*) AS 'nb de recrutement en 2010' FROM employes WHERE date_embauche LIKE '2010%';</code> ou <code></code></li>
+
+                    <li>Augmenter le salaire pour chaque employé de 100 € : <code>UPDATE employes SET salaire = salaire + 100 ;</code></li>
+
+                    <li>Afficher le nombre de services (différents) : <code></code></li>
+
+                    <li>Afficher les informations de l'employé du service commercial gagnant le salaire le plus élevé : <code></code></li>
+
+                    <li>Afficher l'employé ayant été embauché en dernier : <code></code></li>
+                </ol>
             </div>
         </div>
 
