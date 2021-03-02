@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+   <link rel="stylesheet" href="css/bootstrap.css">
+
+    <title>SQL COURS</title>
+  </head>
+
+  <body>
+<div class="container-fluid">
+    <!-- ========================================= -->
+    <!--                navigation                 -->
+    <!-- ========================================= -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">cours SQL</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link active" aria-current="page" href="index.html">Accueil</a>
+                    <a class="nav-link" href="requetes.html">Les requetes MySQL</a>
+                    <a class="nav-link" href="requete_imbriquer.html">Requête Imbriquée</a>
+                    <a class="nav-link" href="jointures.html">Les Jointures</a>
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Menu 3 - Disabled</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="container">
+
+
+         <!-- **********************************************-->
+         <!--               Contenu principal               -->
+         <!-- **********************************************-->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1 class="text-center">Les jointures SQL</h1>
+            </div> <!-- fin col -->
+        </div><!-- fin row -->
+        <div class="row">
+            <h2>Les jointures SQL</h2>
+            <p>Les jointures permettent, comme les requêtes imbriquées, d'effectuer des requêtes sur plusieurs tables. Il faut bien sûr un champs commun.L'avantage des jointures est que l'on peut obtenir le résutat final des colonnes ou champs issue de plusieurs tables différentes.</p>
+            <ul>
+                <li><code>SELECT</code> : Liste des champs que je souhaite afficher dans mon résultat</li>
+                <li><code>FROM</code>: De quelle tables cela provient-il ?</li>
+                <li><code>WHERE</code>: Condition de jointure pour assurer le croisement des données</li>
+                <li><code>AND / OR</code>: autre condition éventuelle</li>
+            </ul>
+            <ul>
+                <li>Afficher les dates auxquelles Guillaume s'est rendu à la bibliothèque ou rendre un livre. On a besoin de 3 colonne : prenom, date sortie, date rendu:  <code>SELECT abonne.prenom, emprunt.date_sortie, emprunt.date_rendu FROM abonne, emprunt WHERE abonne.id_abonne = emprunt.id_abonne AND abonne.prenom = 'Guillaume';</code></li>
+
+                <li>La même requête avec des préfixes : <code>SELECT a.prenom, e.date_sortie, e.date_rendu FROM abonne a, emprunt e WHERE a.id_abonne=e.id_abonne AND a.prenom = 'Guillaume';</code></li>
+                <li>
+                    Qui a emprunté "une vie" en 2014 ? : <code>SELECT abonne.prenom FROM abonne, emprunt, livre WHERE livre.id_livre = emprunt.id_livre AND emprunt.id_abonne = abonne.id_abonne AND livre.titre = 'Une vie' AND emprunt.date_sortie LIKE '2014%';</code>
+                </li>
+                <li>
+                    La même avec préfixe 
+                    <code>
+                        SELECT a.prenom FROM abonne a, emprunt e, livre l WHERE l.id_livre = e.id_livre AND e.id_abonne = a.id_abonne AND l.titre = 'Une vie' AND e.date_sortie LIKE '2014%';
+                    </code>
+                </li>
+                <li>La même en requête imbriquées <code>SELECT prenom FROM abonne WHERE id_abonne IN ( SELECT id_abonne FROM emprunt WHERE date_sortie LIKE '2014%' AND id_livre = (SELECT id_livre FROM livre WHERE titre='Une vie'));</code></li>
+
+                <li>...</li>
+                <li>Afficher le nombre de livres empruntés par chaque abonné <code>SELECT a.prenom, COUNT(e.id_livre) AS 'nombre de livres empruntés' FROM abonne a, emprunt e WHERE a.id_abonne = e.id_abonne GROUP BY e.id_abonne;</code></li>
+
+                <li>Qui a emprunté quoi ? et quand ? : (indice Qui = prénom, quoi = titre du livre, quand date de sortie ; 3 colonnes) : 
+                    <code>SELECT abonne.prenom, livre.titre, emprunt.date_sortie FROM abonne, livre, emprunt WHERE abonne.id_abonne = emprunt.id_abonne AND emprunt.id_livre = livre.id_livre ORDER BY abonne.prenom; </code>
+                    <code>
+                    SELECT a.prenom, l.titre, e.date_sortie FROM abonne a, emprunt e, livre l WHERE a.id_abonne=e.id_abonne AND e.id_livre = l.id_livre;
+                    </code>
+                </li>
+                <hr>
+                <ul>
+                    <li>Ajout d'un abonné : <code>INSERT INTO abonne (id_abonne, prenom) VALUES (NULL, 'Alex') </code></li>
+                    <li>
+                        Afficher le prénom des abonnés avec l'ID des livres qu'ils ont emprunté.
+                        <code>
+                            SELECT abonne.prenom, emprunt.id_livre
+                            FROM abonne, emprunt
+                            WHERE abonne.id_abonne = emprunt.id_abonne
+                            ORDER BY abonne.prenom
+                        </code>
+                        / 
+                        <code>
+                            SELECT a.prenom, e.id_livre FROM abonne a, emprunt e WHERE a.id_abonne = e.id_abonne ORDER BY prenom;
+                        </code>
+                    </li>
+                    <li>
+                        la même avec une jointure externe, qui sera plus complète 
+                        <code>
+                            SELECT abonne.prenom, emprunt.id_livre FROM abonne LEFT JOIN emprunt ON abonne.id_abonne = emprunt.id_abonne;
+                        </code>
+                    </li>
+                    <li>FROM LEFT JOIN : la table placée à gauche (dans notre exemple la table abonne)  de l'expression LEFT JOIN sera la table dont tous les résultats seront rappatrier (sans correspondance exigée dans l'autre table, ex. il n'y a pas l'id d'Alex dans la table emprunt) : nous savont qu'Alex fera parti des résultats même s'il n'a pas emprunter de livre.</li>
+                    <li>ON : (et non plus WHERE) la condition se fait par le mot clef On (non plus par WHERE) dans le cas d'une requête externe de type LEFT JOIN ou RIGHT JOIN...</li>
+                </ul>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h2></h2>
+            </div>
+            <div class="col-12">
+                <ul>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+        </div>
+
+
+
+
+
+
+
+       
+    </div> <!-- fin container secondaire -->
+    
+</div> <!-- fin container principal -->
+
+
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<!--***********************************************-->
+<!--              jQuery en local                  -->
+<!-- **********************************************-->   
+<script src="jquery/jquery-3.5.1.js"></script>
+
+<!--***********************************************-->
+<!--                Popper en local                -->
+<!-- **********************************************-->
+<script src="js/popper.min.js"></script>
+
+<!-- **********************************************-->
+<!--             Boostrap JS en local              -->
+<!-- **********************************************--> 
+  <script src="js/bootstrap.js"></script>
+
+<!-- **********************************************-->
+<!--             JavaScript LOCAL                  -->
+<!-- **********************************************--> 
+
+
+  </body>
+</html>

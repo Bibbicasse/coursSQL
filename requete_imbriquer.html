@@ -170,8 +170,11 @@
                                 );
                             </code>
                         </li>
+                        <li>Afficher les titres des livres que Chloé n'a pas emprunté à la bibliotheque : <code>SELECT titre FROM livre WHERE id_livre IN (SELECT id_livre FROM emprunt WHERE date_rendu IS NULL AND id_abonne = (SELECT id_abonne FROM abonne WHERE prenom = 'Chloé'));</code></li>
+                        <li>Combien de livre Guillaume à emprunter à la bibliothèque :  <code> SELECT COUNT(*) AS 'Nombre de livres' FROM emprunt WHERE id_abonne = (SELECT id_abonne FROM abonne WHERE prenom = 'Guillaume');</code></li>
                 </ul>
             </div>
+            
             <div class="row">
                 <div class="col-12">
                     <h2>Création biblothèque Jeux Vidéo</h2>
@@ -200,6 +203,10 @@
                                 INSERT INTO jeux 
                                 (id_jeux, Titre, id_console,Editeur, Developpeur, Version, Pegi, Années_sortie, Prix_Origine, ISBN) VALUES
                                 (NULL, 'TITRE', 1, 'EDITEUR','DEVELOPPEUR', 'Boitier / DIGITAL', 18, 2021-03-01, 70, NULL );
+                                
+                                INSERT INTO jeux 
+                                (id_jeux, Titre, id_console, Edition, Editeur, Developpeur, Version, Pegi, Années_sortie, Prix_origine, Prix Achat, EAN) VALUES
+                                (NULL, 'TITRE', 2, 'Standard', 'EDITEUR','DEVELOPPEUR', 'Boitier', NULL, NULL, NULL, NULL, NULL );
                             </code>
                         </li>
                         <li>
@@ -224,8 +231,27 @@
                         <li>
                             Afficher toutes les informations du jeux Alien Isolation :
                             <code>SELECT * FROM jeux WHERE titre='Alien Isolation';</code>
-                        </li>                        
+                        </li>
+                        <li>
+                            Afficher tous les jeux avec PEGi 18 ;
+                            SELECT * FROM jeux WHERE pegi=18;
+                        </li>
+                        
+                        <li>
+                            additionner le total d'achat de jeux
+                            <code>SELECT SUM(Prix_achat) AS 'prix total origine' FROM jeux;</code>
+                        </li>
+                        <li>
+                            additionner le total prix original
+                            <code>SELECT SUM(Prix_origine) AS 'prix total origine' FROM jeux;</code>
+                        </li>
+
+                        <li>
+                            Chercher tous les jeux 'Metal Gear Solid'
+                            <code>SELECT * FROM jeux WHERE Titre LIKE 'Metal Gear Solid%';</code>
+                        </li>
                     </ul>
+                    <p> ref aide : <a href="https://sql.sh/fonctions/agregation/sum#:~:text=Exercices%20SQL-,SQL%20SUM(),additionne%20pas%20les%20valeurs%20NULL">SQL.sh</a></p>
                 </div>
             </div>
         </div>
